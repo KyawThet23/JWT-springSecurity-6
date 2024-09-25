@@ -3,9 +3,11 @@ package com.kth.authTest.service;
 import com.kth.authTest.dao.Employee;
 import com.kth.authTest.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class EmployeeServiceImpl implements EmployeeService{
 
     @Autowired
@@ -14,12 +16,12 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public String createEmployee(Employee emp) {
 
-        if(repository.findByName(emp.getName())){
-            return "Employee Name already exists";
-        } else{
+//        Employee existUser = repository.findByName(emp.getName());
+//        if(existUser != null){
+//            return "Employee Name already exists";
+//        } else{
             repository.save(emp);
             return "Created successfully";
-        }
     }
 
     @Override
@@ -29,11 +31,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     @Override
     public String delete(int id) {
-        if(repository.findById(id)){
             repository.deleteById(id);
             return "Deleted successfully.";
-        } else{
-            return "User doesn't exists.";
-        }
     }
 }

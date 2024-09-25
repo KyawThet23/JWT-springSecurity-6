@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,25 +33,23 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(RegisterRequest request) {
 
-
         User user = new User();
         user.setName(request.getName());
         user.setPassword(encoder.encode(request.getPassword()));
         user.setRole(Role.USER);
         repository.save(user);
-        String jwtToken = jwtService.generateToken(user);
         AuthenticationResponse auth = new AuthenticationResponse();
-        auth.setToken(jwtToken);
+        auth.setToken("Register successfully");
         return  auth;
 
     }
 
     public AuthenticationResponse authenticate(AuthRequest request) {
-        authenticationManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getName(),request.getPassword())
         );
         User user = repository.findByName(request.getName()).orElseThrow();
-        String jwtToken = jwtService.generateToken(user);
+        String jwtToken = jwtService.generateJwtToken(authentication);
         AuthenticationResponse auth = new AuthenticationResponse();
         auth.setToken(jwtToken);
         return  auth;

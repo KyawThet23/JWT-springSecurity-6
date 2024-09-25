@@ -18,8 +18,9 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(String email, String name, Integer phone) {
+    public Employee(String email, Long id, String name, Integer phone) {
         this.email = email;
+        this.id = id;
         this.name = name;
         this.phone = phone;
     }
@@ -30,6 +31,14 @@ public class Employee {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

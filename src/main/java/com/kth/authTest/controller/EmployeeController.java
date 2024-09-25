@@ -11,7 +11,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/employee")
-public class employeeController {
+public class EmployeeController {
 
     @Autowired
     EmployeeService service;
@@ -27,7 +27,7 @@ public class employeeController {
     }
 
     @DeleteMapping
-    public String delete(@PathVariable int id){
+    public String delete(@Param("id") int id){
         return service.delete(id);
     }
 
