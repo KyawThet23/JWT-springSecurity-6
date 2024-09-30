@@ -1,7 +1,5 @@
 package com.kth.authTest.service;
 
-import com.kth.authTest.dao.Employee;
-import com.kth.authTest.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
