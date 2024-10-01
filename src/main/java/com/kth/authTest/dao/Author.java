@@ -1,6 +1,8 @@
 package com.kth.authTest.dao;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,13 +16,17 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Builder
 public class Author implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank
     private String name;
+    @NotBlank
     private String genre;
+    @NotBlank
     private int age;
 
     @OneToMany(cascade = CascadeType.ALL,

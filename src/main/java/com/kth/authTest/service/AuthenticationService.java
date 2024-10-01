@@ -7,8 +7,8 @@ import com.kth.authTest.dto.RegisterRequest;
 import com.kth.authTest.repository.UserRepository;
 import com.kth.authTest.user.Role;
 import com.kth.authTest.user.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-
+@RequiredArgsConstructor
 public class AuthenticationService {
 
     private final UserRepository repository;
@@ -25,22 +25,18 @@ public class AuthenticationService {
     @Autowired
     PasswordEncoder encoder;
 
-    public AuthenticationService(UserRepository repository, JwtService jwtService, AuthenticationManager authenticationManager) {
-        this.repository = repository;
-        this.jwtService = jwtService;
-        this.authenticationManager = authenticationManager;
-    }
-
     public AuthenticationResponse register(RegisterRequest request) {
 
-        User user = new User();
-        user.setName(request.getName());
-        user.setPassword(encoder.encode(request.getPassword()));
-        user.setRole(Role.USER);
+        var user = User.builder()
+                .name(request.getName())
+                .password(encoder.encode(request.getPassword()))
+                .role(Role.ADMIN)
+                .build();
         repository.save(user);
-        AuthenticationResponse auth = new AuthenticationResponse();
-        auth.setToken("Register successfully");
-        return  auth;
+        var auth =  AuthenticationResponse.builder()
+                .token("Register successfully")
+                .build();
+        return auth;
 
     }
 
@@ -48,10 +44,10 @@ public class AuthenticationService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getName(),request.getPassword())
         );
-        User user = repository.findByName(request.getName()).orElseThrow();
         String jwtToken = jwtService.generateJwtToken(authentication);
-        AuthenticationResponse auth = new AuthenticationResponse();
-        auth.setToken(jwtToken);
+        var auth = AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
         return  auth;
     }
 }

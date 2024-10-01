@@ -4,10 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+import org.hibernate.validator.constraints.ISBN;
 
 import java.io.Serializable;
 
@@ -16,11 +15,14 @@ import java.io.Serializable;
 @Setter
 @EqualsAndHashCode
 @ToString
+@Builder
 public class Book implements Serializable {
 
     private Long id;
 
+    @NotBlank(message = "Book title must not be blank.")
     private String title;
+    @ISBN
     private String isbn;
 
     @ManyToOne(fetch = FetchType.LAZY)
