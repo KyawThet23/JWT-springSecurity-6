@@ -25,7 +25,7 @@ public class Author implements Serializable {
     @NotBlank
     private String name;
     @NotBlank
-    private String genre;
+    private String nationality;
     @NotBlank
     private int age;
 
